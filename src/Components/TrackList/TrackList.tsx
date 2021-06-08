@@ -12,27 +12,27 @@ interface TrackArrayElement {
 export const TrackList = () => {
   const tracksArray: TrackArrayElement[] = [
     {
-      trackName: 'Басс - жесткий басс в таз',
+      trackName: 'Исполнитель - название 1',
       source: 'spotify',
     },
     {
-      trackName: 'Басс - жесткий басс в таз',
+      trackName: 'Исполнитель - название 2',
       source: 'firebase',
     },
     {
-      trackName: 'Басс - жесткий басс в таз',
+      trackName: 'Исполнитель - название 3',
       source: 'firebase',
     },
     {
-      trackName: 'Басс - жесткий басс в таз',
+      trackName: 'Исполнитель - название 4',
       source: 'spotify',
     },
     {
-      trackName: 'Басс - жесткий басс в таз',
+      trackName: 'Исполнитель - название 5',
       source: 'spotify',
     },
     {
-      trackName: 'Басс - жесткий басс в таз',
+      trackName: 'Исполнитель - название 6',
       source: 'spotify',
     },
   ];
