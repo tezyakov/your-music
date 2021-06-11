@@ -1,7 +1,5 @@
 import React from 'react';
-
 import { Track } from './Track/Track';
-
 import styles from './styles.module.scss';
 
 interface TrackArrayElement {
