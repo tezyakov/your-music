@@ -30,12 +30,10 @@ export const App: React.FC = () => {
 
     const fetchUsers = async () => {
       const usersCollection = await db.collection('users').get();
-      setUsers(usersCollection.docs.map((doc) => doc.data()
-      ));
+      setUsers(usersCollection.docs.map((doc) => doc.data()));
     }
 
     fetchUsers();
-    console.log(users[0])
   }, [])
 
   const onFileChange = async (e: any) => {
@@ -51,7 +49,7 @@ export const App: React.FC = () => {
     const songName = e.target.songName.value;
     if (!songName) return;
     const username = "nikita";
-    console.log(db)
+    console.log(fileUrl)
     db.collection("users").doc(username).set({
       name: songName,
       song: fileUrl,
@@ -73,6 +71,10 @@ export const App: React.FC = () => {
               <p>
                 {user.name}
                 {user.song}
+                <audio controls src={user.song}>
+                  Your browser does not support the
+                  <code>audio</code> element.
+                </audio>
               </p>
             </div>
           ))}
