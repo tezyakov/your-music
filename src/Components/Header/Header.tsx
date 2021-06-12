@@ -1,6 +1,10 @@
 import React from 'react';
 import styles from './styles.module.scss';
 
-export const Header: React.FC = () => (
-  <div className={styles.headerContainer}>YOUR MUSIC</div>
+interface HeaderProps {
+  name: string;
+}
+
+export const Header: React.FC<HeaderProps> = ({ name }) => (
+  <div className={styles.headerContainer}>{`Your music, ${name.split(" ")[0]}`}</div>
 );

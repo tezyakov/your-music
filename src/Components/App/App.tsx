@@ -36,6 +36,8 @@ export const App: React.FC = () => {
     fetchUsers();
   }, [])
 
+  const currentUser = firebase.auth().currentUser?.displayName as string;
+
   const onFileChange = async (e: any) => {
     const file = e.target.files[0];
     const storageRef = app.storage().ref();
@@ -78,7 +80,7 @@ export const App: React.FC = () => {
               </p>
             </div>
           ))}
-          <Header />
+          <Header name={currentUser} />
           <AddButton onClick={() => console.log('a')} />
           <TrackList />
         </Layout>
