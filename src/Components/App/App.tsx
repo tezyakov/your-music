@@ -1,6 +1,7 @@
 import React from 'react';
 import firebase from 'firebase';
 import { StyledFirebaseAuth  } from 'react-firebaseui';
+import SpotifyWebApi from 'spotify-web-api-js';
 
 import { app } from '../../base';
 import { Header } from '../../Components/Header/Header';
@@ -13,6 +14,8 @@ export const App: React.FC = () => {
   const [fileUrl, setFileUrl] = React.useState(null);
   const [users, setUsers]: any = React.useState([]);
 
+  const [token, setToken] = React.useState(null);
+
   const db = app.firestore();
 
   const uiConfig = {
@@ -22,6 +25,8 @@ export const App: React.FC = () => {
       signInSuccess: () => false,
     }
   };
+
+  
 
   React.useEffect(() => {
     firebase.auth().onAuthStateChanged(user => {
@@ -34,6 +39,22 @@ export const App: React.FC = () => {
     }
 
     fetchUsers();
+
+      // @ts-ignore
+      let _token = hash.access_token;
+      // @ts-ignore
+      console.log(hash.access_token)
+      if (_token) {
+        setToken(_token)
+
+        var spotifyApi = new SpotifyWebApi();
+        spotifyApi.setAccessToken(_token);
+        spotifyApi.getMySavedTracks().then(res => console.log(res));
+      }
+      
+
+      console.log(token);
+      // window.location.hash = ""
   }, [])
 
   const currentUser = firebase.auth().currentUser?.displayName as string;
@@ -56,7 +77,32 @@ export const App: React.FC = () => {
       name: songName,
       song: fileUrl,
     })
-  }
+  };
+
+const authEndpoint = 'https://accounts.spotify.com/authorize?';
+// Replace with your app's client ID, redirect URI and desired scopes
+const clientId = "38ab1f4ca24d4a82861422070d2cbe2c";
+const redirectUri = "http://localhost:3000";
+const scopes = [
+  "user-read-currently-playing",
+  "user-read-playback-state",
+  "user-library-read",
+];
+
+// Get the hash of the url
+const hash = window.location.hash
+  .substring(1)
+  .split("&")
+  .reduce(function(initial, item) {
+    if (item) {
+      var parts = item.split("=");
+      // @ts-ignore
+      initial[parts[0]] = decodeURIComponent(parts[1]);
+    }
+    return initial;
+  }, {});
+
+// window.location.hash = "";
    
   return (
     <div>
@@ -72,7 +118,6 @@ export const App: React.FC = () => {
             <div>
               <p>
                 {user.name}
-                {user.song}
                 <audio controls src={user.song}>
                   Your browser does not support the
                   <code>audio</code> element.
@@ -80,6 +125,19 @@ export const App: React.FC = () => {
               </p>
             </div>
           ))}
+          {!token && (
+            <a
+              href={`${authEndpoint}client_id=${clientId}&redirect_uri=${redirectUri}&scope=${scopes.join(
+                '%20',
+              )}&response_type=token&show_dialog=true`}
+            >
+              Login to Spotify
+            </a>
+          )}
+          {token && (
+            // Spotify Player Will Go Here In the Next Step
+            <p>Token</p>
+          )}
           <Header name={currentUser} />
           <AddButton onClick={() => console.log('a')} />
           <TrackList />
