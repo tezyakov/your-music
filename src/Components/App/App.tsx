@@ -2,6 +2,7 @@ import React from 'react';
 import firebase from 'firebase';
 import { StyledFirebaseAuth  } from 'react-firebaseui';
 import SpotifyWebApi from 'spotify-web-api-js';
+import SpotifyPlayer from 'react-spotify-web-playback';
 
 import { app } from '../../base';
 import { Header } from '../../Components/Header/Header';
@@ -84,9 +85,16 @@ const authEndpoint = 'https://accounts.spotify.com/authorize?';
 const clientId = "38ab1f4ca24d4a82861422070d2cbe2c";
 const redirectUri = "http://localhost:3000";
 const scopes = [
-  "user-read-currently-playing",
-  "user-read-playback-state",
-  "user-library-read",
+  'user-read-currently-playing',
+  'user-read-playback-state',
+  'user-library-read',
+  'streaming',
+  'user-read-email',
+  'user-read-private',
+  'user-library-read',
+  'user-library-modify',
+  'user-read-playback-state',
+  'user-modify-playback-state',
 ];
 
 // Get the hash of the url
@@ -135,8 +143,10 @@ const hash = window.location.hash
             </a>
           )}
           {token && (
-            // Spotify Player Will Go Here In the Next Step
-            <p>Token</p>
+            <SpotifyPlayer
+              token={token as unknown as string}
+              uris={['spotify:track:5YAP8zpqj1eIX88makBjDe']}
+            />
           )}
           <Header name={currentUser} />
           <AddButton onClick={() => console.log('a')} />
