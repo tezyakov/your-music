@@ -3,6 +3,7 @@ import styles from './styles.module.scss';
 
 interface HeaderProps {
   name: string;
+  // onClick: () => {};
 }
 
 export const Header: React.FC<HeaderProps> = ({ name }) => (
