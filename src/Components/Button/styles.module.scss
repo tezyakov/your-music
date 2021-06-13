@@ -1,0 +1,11 @@
+.button {
+  cursor: pointer;
+  height: 40px;
+  border-radius: 4px;
+  background-color: floralwhite;
+  border: 1px solid gray;
+
+  &:hover {
+    background-color: greenyellow;
+  }
+}

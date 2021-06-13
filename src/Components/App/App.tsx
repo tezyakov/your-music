@@ -9,8 +9,11 @@ import { app } from '../../base';
 import { authUiConfig, spotify } from '../../constants';
 import { Header } from '../../Components/Header/Header';
 import { Layout } from '../../Components/Layout/Layout';
-import { TrackList } from '../TrackList/TrackList';
-import { AddButton } from '../AddButton/AddButton';
+import { Button } from '../Button/Button';
+import { AddTrackForm } from '../AddTrackForm/AddTrackForm';
+import { FirebaseTrackList } from '../FirebaseTrackList/FirebaseTrackList';
+import { SpotifyLoginLink } from '../SpotifyLoginLink/SpotifyLoginLink';
+import { SpotifyTrackList } from '../SpotifyTrackList/SpotifyTrackList';
 
 export const App: React.FC = () => {
   const [isSignedIn, setIsSignedIn] = React.useState(false);
@@ -83,7 +86,6 @@ export const App: React.FC = () => {
       song: fileUrl,
     });
     setCurrentSongName(songName);
-    // e.target.songName.value = "";
   };
 
   // eslint-disable-next-line no-restricted-globals
@@ -94,49 +96,28 @@ export const App: React.FC = () => {
     <>
       {isSignedIn ? (
         <Layout>
-          <Header name={currentUser} />
-          <button onClick={() => firebase.auth().signOut()}>Sign out</button>
-          <form onSubmit={onSumbit}>
-            <input type="file" accept="audio/*" onChange={onFileChange} />
-            <input type="text" name="songName" placeholder="Song name" />
-            <button>Sumbit</button>
-          </form>
-          {tracks.map((track: { name: string; song: string }) => (
-            <div>
-              <p>
-                {track.name}
-                <audio controls src={track.song}>
-                  Your browser does not support the
-                  <code>audio</code> element.
-                </audio>
-              </p>
-            </div>
-          ))}
-          {!token && (
-            <a
-              href={`${authEndpoint}client_id=${clientId}&redirect_uri=${redirectUri}&scope=${scopes.join(
-                '%20',
-              )}&response_type=token&show_dialog=true`}
-            >
-              Login to Spotify
-            </a>
-          )}
-          {token && (
-            <div>
+          <Header name={currentUser}>
+            <Button onClick={() => firebase.auth().signOut()} text="Sign out" />
+          </Header>
+          <AddTrackForm onSubmit={onSumbit} onFileChange={onFileChange} />
+          <FirebaseTrackList tracks={tracks} />
+          {token ? (
+            <>
               <SpotifyPlayer
                 token={token as unknown as string}
                 // @ts-ignore
                 uris={savedTracks.map((track) => track.uri)}
                 autoPlay
               />
-              <div style={{ maxHeight: '200px' }}>
-                <p>List of tracks:</p>
-                {savedTracks.map((track) => (
-                  // @ts-ignore
-                  <p>{`${track.artists} - ${track.name}`}</p>
-                ))}
-              </div>
-            </div>
+              <SpotifyTrackList tracks={savedTracks} />
+            </>
+          ) : (
+            <SpotifyLoginLink
+              authEndpoint={authEndpoint}
+              clientId={clientId}
+              redirectUri={redirectUri}
+              scopes={scopes}
+            />
           )}
         </Layout>
       ) : (
