@@ -7,8 +7,8 @@ interface FirebaseTrackProps {
 };
 
 export const FirebaseTrack: React.FC<FirebaseTrackProps> = ({ name, song }) => (
-  <div>
-    <p>{name}</p>
+  <div className={styles.firebaseTrackContainer}>
+    <p className={styles.firebaseTrackName}>{name}</p>
     <audio controls src={song}>
       Your browser does not support the
       <code>audio</code> element.

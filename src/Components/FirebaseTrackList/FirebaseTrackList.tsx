@@ -7,7 +7,7 @@ interface FirebaseTrackListProps {
 };
 
 export const FirebaseTrackList: React.FC<FirebaseTrackListProps> = ({ tracks }) => (
-  <div>
+  <div className={styles.firebaseTrackListContainer}>
     {tracks.map((track: { name: string; song: string }) => (
       <FirebaseTrack name={track.name} song={track.song} />
     ))}

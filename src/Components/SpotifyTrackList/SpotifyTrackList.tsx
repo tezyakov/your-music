@@ -7,8 +7,8 @@ interface SpotifyTrackListProps {
 }
 
 export const SpotifyTrackList: React.FC<SpotifyTrackListProps> = ({ tracks }) => (
-  <div>
-    <p>List of tracks:</p>
+  <div className={styles.spotifyTrackListContainer}>
+    <p className={styles.spotifyTrackListHeader}>List of spotify tracks:</p>
     {tracks.map((track: { artists: string[], name: string }) => (
       <SpotifyTrack artists={track.artists} name={track.name} />
     ))}
